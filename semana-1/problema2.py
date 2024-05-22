@@ -1,13 +1,14 @@
-
+# Escribir un programa el cual me diga si un numero es par o impar
 
 try:
-    numero = int(input("ingresa un numero: "))
-    mensaje = "es un numero impar"
+    numero = int(input("Ingrese un numero: "))
+
+    mensaje = "Es un numero impar"
 
     if numero % 2 == 0:
-        mensaje = "e sun numero par"
+        mensaje = "Es un numero par"
 
     print(mensaje)
-
 except Exception as e:
-    print(e)
+    print(f"Error: {e}")
+    
