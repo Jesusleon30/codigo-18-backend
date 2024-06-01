@@ -16,29 +16,107 @@ migrate.init_app(app, db)
 def home():
     return jsonify([])
 
+#CRUD =  C: crear, R: Leer, U: Actualizar, D: ELiminar
 
+# GET   (leer)
+@app.route('/api/v1/user')
+def get_all_users():
+    try:
+        users = User.query.all()
+
+        dic_users = []
+
+        for user in users:
+            dic_users.append(user.to_dic())
+
+        return jsonify({
+            'users': dic_users
+        })
+    except Exception as e:
+        return jsonify({
+            "error": e,
+            "linea": e.__traceback__.tb_lineno
+        }), 500
+
+
+# GET by user id  (leer)
+@app.route('/api/v1/user/<int:user_id>')
+def get_user_by_id(user_id):
+    try:
+        # buscamos al usuario por id
+        user = User.query.get(user_id)
+
+        if user is None:
+            return jsonify({
+                "message": "user not found"
+            })
+
+        return jsonify({
+            "user": user.to_dic()
+        })
+    except Exception as e:
+        return jsonify({
+            "error": e,
+            "linea": e.__traceback__.tb_lineno
+        }), 500
+
+# DELETE (ELIMINAR)
+@app.route('/api/v1/user/<int:user_id>', methods=['DELETE'])
+def delete_user(user_id):
+    try:
+        # buscar por id
+        user=User.query.get(user_id)
+
+        if user is None:
+            return jsonify({
+                "message":"user not found"
+            })
+        
+        # eliminar al usuario
+        db.session.delete(user)
+        db.session.commit()
+
+        return jsonify({
+            "message":"user deleted"
+        })
+    except Exception as e:
+        return jsonify({
+            "error":e,
+            "linea": e.__traceback__.tb_lineno
+        }),500
+
+
+
+# POST (CREAR)
 @app.route('/api/v1/user', methods=['POST'])
 def create_user():
     try:
         user_data = request.get_json()
         user_data['password'] = encrypt_password(
             user_data.get('password')).decode('utf-8')
-        # users.append(user_data)
 
         new_user = User(
-            full_name
+            full_name=f"{user_data['name']} {user_data['lastname']}",
+            email=user_data['email'],
+            password=user_data['password'],
+            phoneNumber=user_data['phone_number'],
+            genre=user_data['genre']
         )
 
+        db.session.add(new_user)
+        db.session.commit()  # COMMIT (SAVEPOINT)
+
         return jsonify({
-            "new_user": user_data
-        })
+            "new_user": new_user.to_dic()
+        }), 201
     except Exception as e:
         return jsonify({
             "error": e,
             "linea": e.__traceback__.tb_lineno
-        })
+        }), 500
 
 
 if __name__ == '__main__':
-    db.create_all()
+    with app.app_context():
+        db.create_all()
     app.run(port=7000, debug=True)
