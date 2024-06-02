@@ -90,10 +90,12 @@ def delete_user(user_id):
 # POST (CREAR)
 @app.route('/api/v1/user', methods=['POST'])
 def create_user():
-    try:
+    try: 
+        #esta es la informacion del cliente que esta enviando
         user_data = request.get_json()
         user_data['password'] = encrypt_password(
             user_data.get('password')).decode('utf-8')
+
 
         new_user = User(
             full_name=f"{user_data['name']} {user_data['lastname']}",
@@ -102,8 +104,8 @@ def create_user():
             phoneNumber=user_data['phone_number'],
             genre=user_data['genre']
         )
-
-        db.session.add(new_user)
+        
+         
         db.session.commit()  # COMMIT (SAVEPOINT)
 
         return jsonify({
