@@ -1,0 +1,4 @@
+# asi se comenta en el archivo gitignore
+
+entorno_django
+__pycache__/ 

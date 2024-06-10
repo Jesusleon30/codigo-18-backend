@@ -1,121 +1,29 @@
-from flask import Flask, jsonify, request
-from utils import encrypt_password
+from flask import Flask, jsonify
 from config import Config
 from extensions import db, migrate
-from entities.users_model import User
+from flask_cors import CORS
+from blueprints.users.routes import users_bp
+from blueprints.products.routes import products_bp
 
 
 app = Flask(__name__)  # __name__ == '__main__'
 app.config.from_object(Config)
 
+CORS(app)
+
 db.init_app(app)
 migrate.init_app(app, db)
+
+#registrar de blueprint:
+
+app.register_blueprint(users_bp)
+app.register_blueprint(products_bp)
+
 
 
 @app.route('/')
 def home():
     return jsonify([])
-
-#CRUD =  C: crear, R: Leer, U: Actualizar, D: ELiminar
-
-# GET   (leer)
-@app.route('/api/v1/user')
-def get_all_users():
-    try:
-        users = User.query.all()
-
-        dic_users = []
-
-        for user in users:
-            dic_users.append(user.to_dic())
-
-        return jsonify({
-            'users': dic_users
-        })
-    except Exception as e:
-        return jsonify({
-            "error": e,
-            "linea": e.__traceback__.tb_lineno
-        }), 500
-
-
-# GET by user id  (leer)
-@app.route('/api/v1/user/<int:user_id>')
-def get_user_by_id(user_id):
-    try:
-        # buscamos al usuario por id
-        user = User.query.get(user_id)
-
-        if user is None:
-            return jsonify({
-                "message": "user not found"
-            })
-
-        return jsonify({
-            "user": user.to_dic()
-        })
-    except Exception as e:
-        return jsonify({
-            "error": e,
-            "linea": e.__traceback__.tb_lineno
-        }), 500
-
-# DELETE (ELIMINAR)
-@app.route('/api/v1/user/<int:user_id>', methods=['DELETE'])
-def delete_user(user_id):
-    try:
-        # buscar por id
-        user=User.query.get(user_id)
-
-        if user is None:
-            return jsonify({
-                "message":"user not found"
-            })
-        
-        # eliminar al usuario
-        db.session.delete(user)
-        db.session.commit()
-
-        return jsonify({
-            "message":"user deleted"
-        })
-    except Exception as e:
-        return jsonify({
-            "error":e,
-            "linea": e.__traceback__.tb_lineno
-        }),500
-
-
-
-# POST (CREAR)
-@app.route('/api/v1/user', methods=['POST'])
-def create_user():
-    try: 
-        #esta es la informacion del cliente que esta enviando
-        user_data = request.get_json()
-        user_data['password'] = encrypt_password(
-            user_data.get('password')).decode('utf-8')
-
-
-        new_user = User(
-            full_name=f"{user_data['name']} {user_data['lastname']}",
-            email=user_data['email'],
-            password=user_data['password'],
-            phoneNumber=user_data['phone_number'],
-            genre=user_data['genre']
-        )
-        
-         
-        db.session.commit()  # COMMIT (SAVEPOINT)
-
-        return jsonify({
-            "new_user": new_user.to_dic()
-        }), 201
-    except Exception as e:
-        return jsonify({
-            "error": e,
-            "linea": e.__traceback__.tb_lineno
-        }), 500
 
 
 if __name__ == '__main__':
