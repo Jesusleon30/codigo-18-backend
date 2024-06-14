@@ -13,8 +13,14 @@ class UnaCategoriaApiView(generics.RetrieveAPIView):
     def get(self, request, id):
         print(id)
         # SELECT * FROM categorias WHERE id=...;
-        print (CategoriaModel.objects.filter(id = id))
-        CategoriaModel.objects.filter(id = id).first()
+        resultado = CategoriaModel.objects.filter(id = id).first()
+        if resultado is None:
+            return response.Response(data={
+            'message': 'la categoria no existe'
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = CategoriaSerializer(instance=resultado)
+
         return response.Response(data={
-            'message': 'ok'
+            'message': serializer.data
         }, status=status.HTTP_200_OK)
