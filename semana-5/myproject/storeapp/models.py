@@ -11,8 +11,6 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-
-
     class Meta:
         db_table = 'categories'
 
@@ -28,7 +26,7 @@ class Product(models.Model):
     stock = models.PositiveIntegerField(default=0) # este no puede ser negativo
     is_active = models.BooleanField(default=True)
     # category = models.CharField(max_length=255, null=True, blank=True)
-    Category = models.ForeignKey(
+    category = models.ForeignKey(
         Category, on_delete=models.CASCADE, blank=True, null=True)
     image = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

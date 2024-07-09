@@ -81,7 +81,7 @@ DATABASES = {
         'NAME': 'reservas',
         'USER': 'postgres',
         'PASSWORD':'root',
-        'PORT': 5432 
+        'PORT': 5432 # este puede ser int  o string da lo mismo
     }
 }
 
