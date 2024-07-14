@@ -8,6 +8,7 @@ from rest_framework.routers import DefaultRouter
 router = DefaultRouter()
 
 # agregar una ruta usando router 
+#la r es para no tener caratteri estrani
 router.register(r'products', ProductViewSet)
 router.register(r'categories', CategoryViewSet)
 

@@ -69,4 +69,12 @@ async function deleteBook(req: Request, res: Response) {
   });
 }
 
+function uploadImage(req: Request, res: Response) {
+  if (!req.file) {
+    return res.status(400).json({
+      message
+    })
+  }
+}
+
 export { getBooks, getBookById, createBook, updateBook, deleteBook };

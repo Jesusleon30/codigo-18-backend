@@ -13,18 +13,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-// modello va siempre en singular
 model Book {
-  id              Int         @id @default(autoincrement())
-  title           String      @db.VarChar(255)
-  author          String      @db.VarChar(255)
-  summary         String      @db.Text
-  isbn            String      @db.VarChar(15) 
-  isPublished     Boolean     @default(false)
-  published_date  DateTime?   //al ponerle el ? lo haria diventar una optional
-  created_at      DateTime    @default(now()) @db.Timestamp(0)
+  id             Int       @id @default(autoincrement())
+  title          String    @db.VarChar(255)
+  author         String    @db.VarChar(255)
+  summary        String    @db.Text
+  isbn           String    @db.VarChar(15)
+  is_published   Boolean   @default(false)
+  published_date DateTime?
+  created_at     DateTime  @default(now()) @db.Timestamp(0)
 
   @@map("books")
-
 }

@@ -5,7 +5,7 @@ CREATE TABLE `books` (
     `author` VARCHAR(255) NOT NULL,
     `summary` TEXT NOT NULL,
     `isbn` VARCHAR(15) NOT NULL,
-    `isPublished` BOOLEAN NOT NULL DEFAULT false,
+    `is_published` BOOLEAN NOT NULL DEFAULT false,
     `published_date` DATETIME(3) NULL,
     `created_at` TIMESTAMP(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
 
