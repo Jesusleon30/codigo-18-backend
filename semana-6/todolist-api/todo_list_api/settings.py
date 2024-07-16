@@ -70,8 +70,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'todolist',
         'USER': 'postgres',
-        'PASSWORD': '4y7sV96vA9wv46VR',
-        'HOST': '127.0.0.1',
+        'PASSWORD': 'root', 
+        'HOST': 'localhost',
         'PORT': '5432'
     }
 }
