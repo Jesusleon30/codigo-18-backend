@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'tasks',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -77,7 +79,7 @@ WSGI_APPLICATION = 'portfolio_todo_list_api.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'todolist',
+        'NAME': 'todolist_portfolio',
         'USER': 'postgres',
         'PASSWORD': 'root',  # '4y7sV96vA9wv46VR',
         'HOST': 'localhost',

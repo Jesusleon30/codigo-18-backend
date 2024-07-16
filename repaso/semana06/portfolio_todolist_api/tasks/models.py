@@ -1,8 +1,7 @@
 from django.db import models
-# from users.models import User
+from users.models import User
 
 # Create your models here.
-
 
 
 class Category(models.Model):
@@ -22,9 +21,8 @@ class Task(models.Model):
     title = models.CharField(max_length=255, null=True, blank=True)
     category = models.ForeignKey(
         Category, on_delete=models.CASCADE, null=True, blank=True)
-    # user = models.ForeignKey(
-    #     User, on_delete=models.CASCADE, null=True, blank=True
-    # )
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     status = models.CharField(
         null=True,
@@ -41,20 +39,3 @@ class Task(models.Model):
 
     class Meta:
         db_table = 'tasks'
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
